@@ -46,6 +46,21 @@ namespace OpenShiftSecrets.Controllers
 
         }
 
+        [HttpGet("Read")]
+        public string Read(string key = "username")
+        {
+            try
+            {
+                return System.IO.File.ReadAllText(key);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+            
+
+        }
+
 
     }
 }
