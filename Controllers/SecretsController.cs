@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace OpenShiftSecrets.Controllers
 {
@@ -14,19 +15,27 @@ namespace OpenShiftSecrets.Controllers
         }
 
         [HttpGet("Dir")]
-        public string Dir(string folder = @"ConfigMap/Secret")
+        public string Dir(string folder = @"test")
         {
+            if (folder is "test")
+            {
+                folder = @"";
+            }
+
             try
             {
                 DirectoryInfo d = new DirectoryInfo(folder);
 
-                FileInfo[] Files = d.GetFiles();
+                FileInfo[] Files = d.GetFiles("*.*", SearchOption.AllDirectories);
                 string str = "";
 
                 foreach (FileInfo file in Files)
                 {
-                    str = str + ", " + file.Name;
+                    str =  str + Environment.NewLine  + file.FullName;
                 }
+
+                //var json = JsonSerializer.Serialize(Files);
+
                 return str;
             }
             catch (Exception ex)
