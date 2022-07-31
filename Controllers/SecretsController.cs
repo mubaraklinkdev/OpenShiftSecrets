@@ -11,9 +11,14 @@ namespace OpenShiftSecrets.Controllers
         [HttpGet("Secret")]
         public string Get()
         {
-            return "Hi";
+            return "Alive";
         }
 
+        /// <summary>
+        /// folder=/etc
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <returns></returns>
         [HttpGet("Dir")]
         public string Dir(string folder = @"test")
         {
@@ -27,26 +32,26 @@ namespace OpenShiftSecrets.Controllers
                 DirectoryInfo d = new DirectoryInfo(folder);
 
                 FileInfo[] Files = d.GetFiles("*.*", SearchOption.AllDirectories);
-                string str = "";
+                string str = $"Dir : {folder} {Environment.NewLine} -------------- {Environment.NewLine}";
 
-                foreach (FileInfo file in Files)
-                {
-                    str =  str + Environment.NewLine  + file.FullName;
-                }
-
-                //var json = JsonSerializer.Serialize(Files);
+                foreach (FileInfo file in Files)                
+                    str =  $" {str} {Environment.NewLine} {file.FullName}";
 
                 return str;
             }
             catch (Exception ex)
             {
-                return ex.ToString();
-           
+                return ex.ToString();           
             }
 
         }
 
-        [HttpGet("Read")]
+        /// <summary>
+        /// key=/etc/secret-volume/username
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        [HttpGet("Read")]        
         public string Read(string key = "username")
         {
             try
@@ -57,8 +62,6 @@ namespace OpenShiftSecrets.Controllers
             {
                 return ex.ToString();
             }
-            
-
         }
 
 
