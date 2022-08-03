@@ -8,6 +8,12 @@ namespace OpenShiftSecrets.Controllers
     [Route("Secrets")]
     public class SecretsController : Controller
     {
+        private readonly IConfiguration iconfiguration;
+        public SecretsController(IConfiguration configuration)
+        {
+            this.iconfiguration = configuration;
+        }
+
         [HttpGet("Secret")]
         public string Get()
         {
@@ -64,6 +70,18 @@ namespace OpenShiftSecrets.Controllers
             }
         }
 
+        [HttpGet("ReadEnv")]
+        public string ReadEnv(string env = "name")
+        {
+            try
+            {
+                return iconfiguration[env];
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
 
     }
 }
